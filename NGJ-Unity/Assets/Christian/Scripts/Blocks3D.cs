@@ -50,7 +50,7 @@ public class Blocks3D : MonoBehaviour
         rotation = new Vector3(Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f));
     }
 
-    public void ActivateBlockAt(Vector3 pos)
+    public void ActivateBlockAt(Vector3 pos, GameColor _color)
     {
         foreach (var block in blocks3D)
         {
@@ -58,6 +58,7 @@ public class Blocks3D : MonoBehaviour
             {
                 blocks3D[block.Key] = true;
                 Block3D activatingBlock = (Block3D)block.Key.GetComponent<Block3D>();
+				activatingBlock.GetComponent<ColoredBlock>().SetColor(_color);
                 //Rotate = false;
                 activatingBlock.DoActivation(pos);
                 break;

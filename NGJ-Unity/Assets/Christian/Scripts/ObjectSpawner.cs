@@ -42,6 +42,8 @@ public class ObjectSpawner : MonoBehaviour
             Block2D block = obj.GetComponent<Block2D>();
             block.center = this.transform;
 
+			obj.GetComponent<ColoredBlock>().SetColor((GameColor)Random.Range(0, 6));
+
 			yield return new WaitForSeconds(Random.Range(0.8f, 1.0f));
 		}
 	}

@@ -83,19 +83,17 @@ public class PrivacyScript : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D other)
     {
-		//ColoredObject obj = other.GetComponent<ColoredObject> ();
+		ColoredObject obj = other.GetComponent<ColoredObject> ();
 
         if(other.tag.Equals("Block"))
         {
-			//if(TestHit(obj.transform.position - transform.position, obj.ObjectColor)) {
-			//	Debug.Log("Hit color: " + obj.ObjectColor.ToString());
-			//}
+			if(TestHit(obj.transform.position - transform.position, obj.ObjectColor)) {
+	            other.tag = "Untagged";
+				blocks3D.ActivateBlockAt(other.transform.position, obj.ObjectColor);
+			}
 
-            other.tag = "Untagged";
-            blocks3D.ActivateBlockAt(other.transform.position);
-            Block2D obj = other.GetComponent<Block2D>();
-            obj.DestroyAndCreate();
-            //Destroy(other.gameObject);
+			Block2D block2D = other.GetComponent<Block2D>();
+			block2D.DestroyAndCreate();
         }
     }
 }

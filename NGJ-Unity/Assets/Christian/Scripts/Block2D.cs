@@ -18,17 +18,17 @@ public class Block2D : MonoBehaviour
         if (applyForce)
         {
             Vector3 direction = -(transform.position - center.position).normalized;
-            rigidbody2D.AddForce(new Vector2(direction.x, direction.y) * 5);
+            rigidbody2D.AddForce(new Vector2(direction.x, direction.y) * 2);
         }
 	}
 	
 	public void Update () 
 	{
-		if (Input.GetMouseButtonDown (0)) 
+		/*if (Input.GetMouseButtonDown (0)) 
 		{
 			Vector3 direction = (transform.position - center.position).normalized;
 			rigidbody2D.AddForce(new Vector2(direction.x * 100, direction.y * 100)); 
-		}
+		}*/
 	}
 
     public void DestroyAndCreate()
