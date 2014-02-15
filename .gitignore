@@ -5,3 +5,7 @@
 /NGJ-Unity/NGJ-Unity.userprefs
 /NGJ-Unity/NGJ-Unity-csharp.sln
 /NGJ-Unity/Assembly-CSharp.csproj
+/NGJ-Unity/*.csproj
+/NGJ-Unity/*.sln
+/NGJ-Unity/*.userprefs
+/NGJ-Unity/Temp
