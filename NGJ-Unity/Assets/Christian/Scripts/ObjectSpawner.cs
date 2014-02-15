@@ -42,7 +42,7 @@ public class ObjectSpawner : MonoBehaviour
             Block2D block = obj.GetComponent<Block2D>();
             block.center = this.transform;
 
-			yield return new WaitForSeconds(Random.Range(1, 5));
+			yield return new WaitForSeconds(Random.Range(0.8f, 1.0f));
 		}
 	}
 }

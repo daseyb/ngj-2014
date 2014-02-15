@@ -14,6 +14,8 @@ public enum GameColor
 
 public class PrivacyScript : MonoBehaviour
 {
+    public Blocks3D blocks3D;
+
     public Color circleColor = new Color(0.5f, 0.5f, 0.5f, 1f);
     public float circleRadius = 1.0f;
     public int circleVertexCount = 20;
@@ -82,14 +84,21 @@ public class PrivacyScript : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D other)
     {
-		ColoredObject obj = other.GetComponent<ColoredObject> ();
+		//ColoredObject obj = other.GetComponent<ColoredObject> ();
 
         if(other.tag.Equals("Block"))
         {
-			if(TestHit(obj.transform.position - transform.position, obj.ObjectColor)) {
-				Debug.Log("Hit color: " + obj.ObjectColor.ToString());
-			}
-            Destroy(other.gameObject);
+			//if(TestHit(obj.transform.position - transform.position, obj.ObjectColor)) {
+			//	Debug.Log("Hit color: " + obj.ObjectColor.ToString());
+			//}
+
+
+
+            other.tag = "Untagged";
+            blocks3D.ActivateBlockAt(other.transform.position);
+            Block2D obj = other.GetComponent<Block2D>();
+            obj.DestroyAndCreate();
+            //Destroy(other.gameObject);
         }
     }
 }

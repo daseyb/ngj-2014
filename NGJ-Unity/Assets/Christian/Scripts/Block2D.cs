@@ -4,7 +4,7 @@ using System.Collections;
 public class Block2D : MonoBehaviour 
 {
 	public Transform center;
-    public float destroyDuration = 0.2f;
+    public float destroyDuration = 0.001f;
 
 	public void Start()
 	{
@@ -14,7 +14,7 @@ public class Block2D : MonoBehaviour
 	public void FixedUpdate()
 	{
 		Vector3 direction = -(transform.position - center.position).normalized;
-		rigidbody2D.AddForce (new Vector2 (direction.x, direction.y));
+		rigidbody2D.AddForce (new Vector2 (direction.x, direction.y) * 5);
 	}
 	
 	public void Update () 
