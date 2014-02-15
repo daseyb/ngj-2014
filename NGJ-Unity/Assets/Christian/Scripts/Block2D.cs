@@ -4,17 +4,22 @@ using System.Collections;
 public class Block2D : MonoBehaviour 
 {
 	public Transform center;
-    public float destroyDuration = 0.001f;
+    public float destroyDuration = 0.1f;
+    public bool applyForce = true;
 
 	public void Start()
 	{
 		rigidbody2D.gravityScale = 0; //Disable gravity
+        rigidbody2D.AddTorque(0.5f);
 	}
 
 	public void FixedUpdate()
 	{
-		Vector3 direction = -(transform.position - center.position).normalized;
-		rigidbody2D.AddForce (new Vector2 (direction.x, direction.y) * 5);
+        if (applyForce)
+        {
+            Vector3 direction = -(transform.position - center.position).normalized;
+            rigidbody2D.AddForce(new Vector2(direction.x, direction.y) * 5);
+        }
 	}
 	
 	public void Update () 
@@ -28,6 +33,7 @@ public class Block2D : MonoBehaviour
 
     public void DestroyAndCreate()
     {
+        applyForce = false;
         StartCoroutine("DestroyAndCreateCoroutine");    
     }
 
@@ -36,13 +42,17 @@ public class Block2D : MonoBehaviour
         float startTime = Time.time;
         float initialScale = this.transform.localScale.x;
 
-        while (Time.time < startTime + destroyDuration)
-        {
-            float scale = Mathf.Lerp(initialScale, 0.0f, destroyDuration);
-            this.transform.localScale = new Vector3(scale, scale, 0.0f);
-            yield return new WaitForEndOfFrame();
-        }
-        
+        rigidbody2D.velocity = rigidbody2D.velocity.normalized;
+
+         float t = 0;
+         while (t < 1)
+         {
+             yield return new WaitForEndOfFrame();
+             t += Time.deltaTime / destroyDuration;
+             float scale = Mathf.Lerp(initialScale, 0.0f, t);
+             this.transform.localScale = new Vector3(scale, scale, 0.0f);
+         }
+
         Destroy(gameObject);
     }
 }

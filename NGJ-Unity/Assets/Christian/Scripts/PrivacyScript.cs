@@ -91,8 +91,6 @@ public class PrivacyScript : MonoBehaviour
 			//	Debug.Log("Hit color: " + obj.ObjectColor.ToString());
 			//}
 
-
-
             other.tag = "Untagged";
             blocks3D.ActivateBlockAt(other.transform.position);
             Block2D obj = other.GetComponent<Block2D>();
