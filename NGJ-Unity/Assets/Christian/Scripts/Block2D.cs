@@ -20,9 +20,9 @@ public class Block2D : OnPlayBase
 	{
 		base.OnPlay ();
 		playCount++;
-		if (playCount > 1 /*&& playCount % 2 == 0*/) {
+		if (playCount > 1) {
 			Vector3 direction = -(transform.position - center.position).normalized;
-			rigidbody2D.velocity = new Vector2(direction.x, direction.y) * 2;
+			rigidbody2D.velocity = new Vector2(direction.x, direction.y) * 5;
 		}
 	}
 
