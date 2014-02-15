@@ -1,12 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(SamplePlayer))]
 public class OnPlayBase : MonoBehaviour {
-	SamplePlayer player;
+	public SamplePlayer Player;
 	void Start () {
-		player = GetComponent<SamplePlayer> ();
-		player.OnPlay += OnPlay;
+		Player.OnPlay += OnPlay;
 		OnStart ();
 	}
 
