@@ -33,7 +33,6 @@ public class PrivacyScript : MonoBehaviour
         lineRenderer.material = new Material(Shader.Find("Diffuse"));
         lineRenderer.SetVertexCount(circleVertexCount + 1);
 		lineRenderer.useWorldSpace = false;
-        Debug.Log(ac.length);
     }
 
     public void Update()
@@ -58,22 +57,22 @@ public class PrivacyScript : MonoBehaviour
     }
 
 	public bool TestHit(Vector2 _dir, GameColor _testColor) {
-		float angle = Vector2.Angle (Vector2.right, _dir)/180 * Mathf.PI;
-		if(_dir.y < 0)
-			angle += Mathf.PI;
+		float angle = Vector2.Angle(Vector2.right, _dir);
+		Vector3 cross = Vector3.Cross(Vector2.right, _dir);
+		
+		if (cross.z > 0)
+			angle = 360 - angle;
+
+		angle *= Mathf.Deg2Rad;
+		angle = Mathf.PI * 2 - angle;
 
 		List<CirclePart> hitParts = new List<CirclePart> ();
 		foreach (var circlePart in CircleParts) {
-			if(circlePart.Covers(angle))
+			if(circlePart.ObjectColor == _testColor && circlePart.Covers(angle))
 				hitParts.Add(circlePart);
 		}
 
-		foreach (var part in hitParts) {
-			if(part.ObjectColor == _testColor)
-				return true;
-		}
-
-		return false;
+		return hitParts.Count > 0;
 	}
 
 
