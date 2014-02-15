@@ -8,6 +8,10 @@ public class OnPlayBase : MonoBehaviour {
 		OnStart ();
 	}
 
+	void OnDisable() {
+		Player.OnPlay -= OnPlay;
+	}
+
 	protected virtual void OnStart() {
 		
 	}

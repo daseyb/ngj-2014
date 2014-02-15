@@ -1,34 +1,29 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Block2D : MonoBehaviour 
+public class Block2D : OnPlayBase 
 {
 	public Transform center;
     public float destroyDuration = 0.1f;
     public bool applyForce = true;
 
-	public void Start()
+
+	int playCount = 0;
+
+	protected override void OnStart()
 	{
 		rigidbody2D.gravityScale = 0; //Disable gravity
         rigidbody2D.AddTorque(0.5f);
 	}
 
-	public void FixedUpdate()
+	protected override void OnPlay ()
 	{
-        if (applyForce)
-        {
-            Vector3 direction = -(transform.position - center.position).normalized;
-            rigidbody2D.AddForce(new Vector2(direction.x, direction.y) * 2);
-        }
-	}
-	
-	public void Update () 
-	{
-		/*if (Input.GetMouseButtonDown (0)) 
-		{
-			Vector3 direction = (transform.position - center.position).normalized;
-			rigidbody2D.AddForce(new Vector2(direction.x * 100, direction.y * 100)); 
-		}*/
+		base.OnPlay ();
+		playCount++;
+		if (playCount > 1 /*&& playCount % 2 == 0*/) {
+			Vector3 direction = -(transform.position - center.position).normalized;
+			rigidbody2D.velocity = new Vector2(direction.x, direction.y) * 2;
+		}
 	}
 
     public void DestroyAndCreate()
