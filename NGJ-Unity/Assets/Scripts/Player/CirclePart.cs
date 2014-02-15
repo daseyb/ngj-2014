@@ -9,18 +9,24 @@ public class CirclePart : ColoredObject {
 		if(Size == 0)
 			return false;
 
-		float left = position - Size / 2;
-		float right = position + Size / 2;
-
-		if( right > Mathf.PI * 2) {
-			right -= Mathf.PI * 2;
-			left -= Mathf.PI * 2;
-			_angle -= Mathf.PI * 2;
+		float smaller = _angle;
+		float larger = position;
+		
+		if(smaller > larger) {
+			float temp = larger;
+			larger = smaller;
+			smaller = temp;
 		}
-
-		right -= left;
-		_angle -= left;
-
-		return 0 <= _angle && _angle <= right;
+		
+		bool cw = larger - smaller < smaller + Mathf.PI * 2 - larger;
+		
+		float angleDist = 0;
+		
+		if(cw) {
+			angleDist = larger - smaller;
+		} else {
+			angleDist = smaller + Mathf.PI * 2 - larger;
+		}
+		return angleDist < Size/2;
 	}
 }
