@@ -11,10 +11,6 @@ public class PrivacyScript : MonoBehaviour
     public void Start()
     {
         lineRenderer = gameObject.AddComponent<LineRenderer>();
-    }
-
-    public void OnUpdate()
-    {
         Color c1 = new Color(0.5f, 0.5f, 0.5f, 1f);
         lineRenderer.material = new Material(Shader.Find("Particles/Additive"));
         lineRenderer.SetColors(c1, c1);
@@ -28,10 +24,15 @@ public class PrivacyScript : MonoBehaviour
             float x = radius * Mathf.Cos(angle);
             float y = radius * Mathf.Sin(angle);
 
-            Vector3 pos = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * radius;
-            //Vector3 pos = new Vector3(x, y, 0);
+            //Vector3 pos = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * radius;
+            Vector3 pos = new Vector3(x, y, 0);
             lineRenderer.SetPosition(i, pos);
         }
+    }
+
+    public void OnUpdate()
+    {
+        
     
     }
 
@@ -43,9 +44,10 @@ public class PrivacyScript : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log(other.tag);
         //if(other.tag.Equals("Block"))
         //{
-            Destroy(other);
+            Destroy(other.gameObject);
         //}
     }
 }
