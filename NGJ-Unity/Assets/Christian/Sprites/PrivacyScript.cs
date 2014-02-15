@@ -32,8 +32,8 @@ public class PrivacyScript : MonoBehaviour
 
             float acV = ac.Evaluate(((float)i / (float)circleVertexCount));
 
-            float x = (circleRadius * Mathf.Cos(angle)) + acV;
-            float y = (circleRadius * Mathf.Sin(angle)) + acV;
+			float x = (circleRadius + acV) * Mathf.Cos(angle);
+			float y = (circleRadius + acV) * Mathf.Sin(angle);
 
             Vector3 pos = new Vector3(x, y, 0);
             lineRenderer.SetPosition(i, pos);
