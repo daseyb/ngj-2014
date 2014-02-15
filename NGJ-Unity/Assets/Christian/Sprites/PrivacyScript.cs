@@ -24,7 +24,8 @@ public class PrivacyScript : MonoBehaviour
     {        
         lineRenderer.SetColors(circleColor, circleColor);
         lineRenderer.SetWidth(circleWidth, circleWidth);
-
+		lineRenderer.SetVertexCount (circleVertexCount + 1);
+		
         for (var i = 0; i < circleVertexCount + 1; i++)
         {
 
