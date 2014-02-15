@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 //Plays a sample in time
 [RequireComponent(typeof(AudioSource))]
 public class SamplePlayer : MonoBehaviour {
+	public event Action OnPlay;
+
 	//The clip that will be played;
 	public AudioClip SampleClip;
 
@@ -17,8 +20,8 @@ public class SamplePlayer : MonoBehaviour {
 	public float Pitch = 1;
 	
 	//To sources, to switch in between as PlayScheduled stops playback.
-	AudioSource PrimarySource;
-	AudioSource SecondarySource;
+	public AudioSource PrimarySource { get; private set; }
+	public AudioSource SecondarySource { get; private set; }
 
 	int currentBeat = -1;
 
@@ -51,6 +54,13 @@ public class SamplePlayer : MonoBehaviour {
 			AudioSource temp = SecondarySource;
 			SecondarySource = PrimarySource;
 			PrimarySource = temp;
+			StartCoroutine(SendPlayEvent(_delay));
 		}
+	}
+
+	IEnumerator SendPlayEvent(double _delay) {
+		yield return new WaitForSeconds((float)_delay);
+		if (OnPlay != null)
+			OnPlay ();
 	}
 }

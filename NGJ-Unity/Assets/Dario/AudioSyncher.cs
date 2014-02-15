@@ -19,7 +19,7 @@ public class AudioSyncher : MonoBehaviour
 	// Use this for initialization
 	void Start () {
 		//Beats are in a 1/16th resolution
-		secondsPerBeat = 60.0 / (BPM * 16); 
+		secondsPerBeat = 60.0 / (BPM * 4); 
 		now = AudioSettings.dspTime;
 		next = now + secondsPerBeat;
 	}
