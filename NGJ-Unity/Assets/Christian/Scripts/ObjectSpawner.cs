@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ObjectSpawner : MonoBehaviour 
 {
-	public Object diamond;
+	public Object Block;
 	public void Start () 
 	{
 		StartCoroutine ("Spawner");
@@ -38,9 +38,9 @@ public class ObjectSpawner : MonoBehaviour
             Vector3 position = Camera.main.ScreenToWorldPoint(new Vector3(spawnX, spawnY, 0));
             position.z = 0;
 
-            GameObject obj = (GameObject)Instantiate(diamond, position, Quaternion.identity);
-            GravityScript gs = obj.GetComponent<GravityScript>();
-            gs.center = this.transform;
+            GameObject obj = (GameObject)Instantiate(Block, position, Quaternion.identity);
+            Block2D block = obj.GetComponent<Block2D>();
+            block.center = this.transform;
 
 			yield return new WaitForSeconds(Random.Range(1, 5));
 		}
