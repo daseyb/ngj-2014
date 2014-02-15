@@ -15,8 +15,9 @@ public class PrivacyScript : MonoBehaviour
     public void Start()
     {
         lineRenderer = gameObject.AddComponent<LineRenderer>();
-        lineRenderer.material = new Material(Shader.Find("Particles/Additive"));
+        lineRenderer.material = new Material(Shader.Find("Diffuse"));
         lineRenderer.SetVertexCount(circleVertexCount + 1);
+		lineRenderer.useWorldSpace = false;
         Debug.Log(ac.length);
     }
 

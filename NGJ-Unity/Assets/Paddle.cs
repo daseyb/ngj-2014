@@ -18,13 +18,19 @@ public class Paddle : MonoBehaviour {
 	public float position = 0;
 
 	float speed = 0;
-	
+
+	public float Width { get { return Privacy.circleWidth * WidthMultiplier; } }
+
+	public float GetRadius(float _angle) {
+		return Privacy.circleRadius + DistanceOffset + Privacy.ac.Evaluate(_angle/(Mathf.PI * 2)) + (Privacy.circleWidth * WidthMultiplier)/2; 
+	}
+
 	// Use this for initialization
 	void Start () {
 		lineRenderer = GetComponent<LineRenderer>();
 	}
 
-	float WrapAngle(float _angle) {
+	public static float WrapAngle(float _angle) {
 		_angle = (Mathf.Abs (_angle) % (Mathf.PI * 2)) * Mathf.Sign (_angle);
 		if(_angle < 0)
 			_angle = Mathf.PI * 2 + _angle;
@@ -34,7 +40,7 @@ public class Paddle : MonoBehaviour {
 	void UpdateLineRendering() {
 		vertexCount = (int)((Size / (Mathf.PI * 2)) * Privacy.circleVertexCount);
 		lineRenderer.SetColors(PlayerColor, PlayerColor);
-		lineRenderer.SetWidth(Privacy.circleWidth * WidthMultiplier, Privacy.circleWidth * WidthMultiplier);
+		lineRenderer.SetWidth(Width, Width);
 		lineRenderer.SetVertexCount (vertexCount + 1);
 
 		
@@ -43,9 +49,7 @@ public class Paddle : MonoBehaviour {
 			float angle = ((float)i / (float)vertexCount) * Size - Size/2 + position;
 			angle = WrapAngle (angle);
 			
-			float acV = Privacy.ac.Evaluate(angle/(Mathf.PI * 2));
-			
-			float radius = Privacy.circleRadius + DistanceOffset + acV;
+			float radius = GetRadius(angle);
 			float x = radius * Mathf.Cos(angle);
 			float y = radius * Mathf.Sin(angle);
 			
@@ -61,7 +65,7 @@ public class Paddle : MonoBehaviour {
 		if (Mathf.Sign (acc) != Mathf.Sign (speed))
 			speed = 0;
 
-		speed += acc * 200 * Time.deltaTime;
+		speed = acc * MaxSpeed;
 		if(acc == 0)
 			speed = 0;
 
