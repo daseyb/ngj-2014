@@ -13,28 +13,34 @@ public class Block2D : OnPlayBase
 	protected override void OnStart()
 	{
 		rigidbody2D.gravityScale = 0; //Disable gravity
-        rigidbody2D.AddTorque(0.5f);
+        rigidbody2D.AddTorque(1.5f);
 	}
 
 	protected override void OnPlay ()
 	{
 		base.OnPlay ();
 		playCount++;
-		if (playCount > 1) {
+		if (playCount > 1) 
+        {
 			Vector3 direction = -(transform.position - center.position).normalized;
 			rigidbody2D.velocity = new Vector2(direction.x, direction.y) * 5;
 		}
 	}
 
-    public void DestroyAndCreate()
+    public void PushBack()
     {
-        applyForce = false;
-        StartCoroutine("DestroyAndCreateCoroutine");    
+        Vector3 direction = (transform.position - center.position).normalized;
+        rigidbody2D.velocity = new Vector2(direction.x, direction.y) * 80;
     }
 
-    IEnumerator DestroyAndCreateCoroutine()
+    public void StartDestroy()
+    {
+        applyForce = false;
+        StartCoroutine("StartDestroyCoroutine");    
+    }
+
+    IEnumerator StartDestroyCoroutine()
     { 
-        float startTime = Time.time;
         float initialScale = this.transform.localScale.x;
 
         rigidbody2D.velocity = rigidbody2D.velocity.normalized;

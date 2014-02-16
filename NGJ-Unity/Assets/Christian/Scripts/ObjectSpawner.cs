@@ -5,7 +5,7 @@ public class ObjectSpawner : OnPlayBase
 {
 	public Object Block;
 
-	public int SpawnRythm = 4;
+	public int SpawnRythm = 2;
 
 	int playCounter = 0;
 

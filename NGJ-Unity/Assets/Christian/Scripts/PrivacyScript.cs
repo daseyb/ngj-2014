@@ -14,7 +14,9 @@ public enum GameColor
 
 public class PrivacyScript : MonoBehaviour
 {
-    public Blocks3D blocks3D;
+    public Blocks3D[] blocks3D;
+
+    public int currentBlocksIndex = 0;
 
     public Color circleColor = new Color(0.5f, 0.5f, 0.5f, 1f);
     public float circleRadius = 1.0f;
@@ -26,7 +28,8 @@ public class PrivacyScript : MonoBehaviour
 	public CirclePart[] CircleParts;
 
     private LineRenderer lineRenderer;
-    
+
+
     public void Start()
     {
         lineRenderer = gameObject.AddComponent<LineRenderer>();
@@ -54,6 +57,8 @@ public class PrivacyScript : MonoBehaviour
             Vector3 pos = new Vector3(x, y, 0);
             lineRenderer.SetPosition(i, pos);
         }
+
+
     }
 
 	public bool TestHit(Vector2 _dir, GameColor _testColor) {
@@ -83,17 +88,35 @@ public class PrivacyScript : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D other)
     {
+        if (currentBlocksIndex < 0 || currentBlocksIndex >= blocks3D.Length)
+        { return; }
+
 		ColoredObject obj = other.GetComponent<ColoredObject> ();
 
         if(other.tag.Equals("Block"))
         {
-			if(TestHit(obj.transform.position - transform.position, obj.ObjectColor)) {
+			//if(TestHit(obj.transform.position - transform.position, obj.ObjectColor)) 
+            {
 	            other.tag = "Untagged";
-				blocks3D.ActivateBlockAt(other.transform.position, obj.ObjectColor);
+                if (!blocks3D[currentBlocksIndex].roundFinished)
+                    blocks3D[currentBlocksIndex].ActivateBlockAt(other.transform.position, obj.ObjectColor);
 			}
 
 			Block2D block2D = other.GetComponent<Block2D>();
-			block2D.DestroyAndCreate();
+			block2D.StartDestroy();
         }
+    }
+
+    public void NextRound()
+    {
+        foreach (GameObject go in GameObject.FindGameObjectsWithTag("Block"))
+        {
+            go.GetComponent<Block2D>().PushBack();
+        }
+
+        currentBlocksIndex++;
+        if (currentBlocksIndex >= blocks3D.Length)
+            --currentBlocksIndex;
+        //blocks3D[currentBlocksIndex].GetComponent<Blocks3D>().StartNewRound(); 
     }
 }

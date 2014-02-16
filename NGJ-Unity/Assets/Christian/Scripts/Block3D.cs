@@ -5,6 +5,7 @@ public class Block3D : MonoBehaviour
 {
     public float endScale = 0.3f;
     public float growDuration = 0.01f;
+    public float shrinkDuration = 0.01f;
     public float moveDuration = 0.01f;
     public float rotationDuration = 0.01f;
     public float initialScale = 0.0f;
@@ -36,6 +37,12 @@ public class Block3D : MonoBehaviour
         StartCoroutine("GrowScale");
         StartCoroutine("MoveToStartPosition");
         //StartCoroutine("RotateToStartRotation");
+    }
+
+    public void DoReset ()
+    {
+
+        StartCoroutine("ShrinkScale");
     }
     
 	public void Update () 
@@ -83,8 +90,6 @@ public class Block3D : MonoBehaviour
 
     IEnumerator GrowScale()
     {
-        //Debug.Log("GrowScale Loop");
-
         float t = 0;
         while (t < 1)
         {
@@ -96,5 +101,21 @@ public class Block3D : MonoBehaviour
         }
         transform.localScale = new Vector3(endScale, endScale, endScale);
 
+    }
+
+    IEnumerator ShrinkScale()
+    {
+        float scale = transform.localScale.x;
+
+        float t = 0;
+        while (t < 1)
+        {
+            yield return new WaitForEndOfFrame();
+            t += Time.deltaTime / shrinkDuration;
+
+            float currentScale = Mathf.Lerp(scale, initialScale, t);
+            transform.localScale = new Vector3(currentScale, currentScale, currentScale);
+        }
+        transform.localScale = new Vector3(initialScale, initialScale, initialScale);
     }
 }
