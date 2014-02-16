@@ -47,6 +47,9 @@ public class AudioManager : MonoBehaviour {
 	}
 
 	public void Play( GameColor _color, LoopType _type) {
+		if(Players [_color] [_type].Volume > 0)
+			return;
+
 		Players [GameColor.Red][_type].NextBeatVolume = 0;
 		Players [GameColor.Green][_type].NextBeatVolume = 0;
 		Players [GameColor.Yellow][_type].NextBeatVolume = 0;

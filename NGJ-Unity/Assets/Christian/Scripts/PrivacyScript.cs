@@ -22,7 +22,7 @@ public class PrivacyScript : MonoBehaviour
     public int circleVertexCount = 20;
     public float circleWidth = 0.05f;
 
-	public int MaxMissedBlocksAllowed = 10;
+	public int MaxMissedBlocksAllowed = 30;
 
     public AnimationCurve ac;
 

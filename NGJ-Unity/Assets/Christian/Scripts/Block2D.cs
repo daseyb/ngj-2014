@@ -32,12 +32,14 @@ public class Block2D : OnPlayBase
     public void DestroyAndCreate()
     {
         applyForce = false;
+		collider2D.enabled = false;
 		StartCoroutine(DestroyAndCreateCoroutine());    
     }
 
 	public void DestroyAndLoose() 
 	{
 		applyForce = false;
+		collider2D.enabled = false;
 		StartCoroutine(DestroyAndLooseCoroutine());    
 	}
 
