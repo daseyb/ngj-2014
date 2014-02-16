@@ -11,6 +11,8 @@ public class Blocks3D : MonoBehaviour
     private Vector3 rotation;
     public bool Rotate = true;
 
+	public bool IsFull { get; private set; }
+
 	void Start () 
     {
         rotation = new Vector3(Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f));
@@ -24,7 +26,7 @@ public class Blocks3D : MonoBehaviour
 
         StartCoroutine("RotationUpdate");
 	}
-	
+
 	public void Update () 
     {
         if(Random.Range(0.0f, 1.0f) > 0.99f)
@@ -64,5 +66,6 @@ public class Blocks3D : MonoBehaviour
                 break;
             }
         }
+		IsFull = true;
     }
 }

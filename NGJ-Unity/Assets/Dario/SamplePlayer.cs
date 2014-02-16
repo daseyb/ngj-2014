@@ -45,10 +45,15 @@ public class SamplePlayer : MonoBehaviour {
 	}
 
 	void OnBeat(double _delay) {
+		AudioClip prevClip = PrimarySource.clip;
+		PrimarySource.clip = SecondarySource.clip = SampleClip;
 		PrimarySource.volume = SecondarySource.volume = Volume;
 		PrimarySource.pitch = SecondarySource.pitch = Pitch;
 
 		currentBeat = (currentBeat + 1) % LoopLength;
+		if (prevClip == null && SampleClip != null)
+				currentBeat = 0;
+
 		if (currentBeat == 0) {
 			SecondarySource.PlayScheduled (_delay);
 			AudioSource temp = SecondarySource;

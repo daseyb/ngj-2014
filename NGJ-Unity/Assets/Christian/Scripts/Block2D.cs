@@ -19,6 +19,9 @@ public class Block2D : OnPlayBase
 	protected override void OnPlay ()
 	{
 		base.OnPlay ();
+		if(!applyForce)
+			return;
+
 		playCount++;
 		if (playCount > 1) {
 			Vector3 direction = -(transform.position - center.position).normalized;
@@ -29,8 +32,35 @@ public class Block2D : OnPlayBase
     public void DestroyAndCreate()
     {
         applyForce = false;
-        StartCoroutine("DestroyAndCreateCoroutine");    
+		StartCoroutine(DestroyAndCreateCoroutine());    
     }
+
+	public void DestroyAndLoose() 
+	{
+		applyForce = false;
+		StartCoroutine(DestroyAndLooseCoroutine());    
+	}
+
+	IEnumerator DestroyAndLooseCoroutine()
+	{ 
+		float startTime = Time.time;
+		float initialScale = this.transform.localScale.x;
+		Color initalColor = this.renderer.material.color;
+		rigidbody2D.velocity = rigidbody2D.velocity.normalized;
+		
+		float t = 0;
+		while (t < 1)
+		{
+			yield return new WaitForEndOfFrame();
+			t += Time.deltaTime / destroyDuration;
+			float scale = Mathf.Lerp(initialScale, initialScale*1.5f, t);
+			this.transform.localScale = new Vector3(scale, scale, 0.0f);
+			this.renderer.material.color = Color.Lerp(Color.gray, new Color(0.0f, 0.0f, 0.0f, 0), t*2);
+		}
+		
+		Destroy(gameObject);
+	}
+
 
     IEnumerator DestroyAndCreateCoroutine()
     { 
