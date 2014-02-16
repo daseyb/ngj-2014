@@ -4,13 +4,16 @@ using System.Collections.Generic;
 
 public class Blocks3D : MonoBehaviour 
 {
-    public bool Rotate = true;
+    public bool doRotate = true;
 
     public PrivacyScript priv;
 
     private Dictionary<Transform, bool> blocks3D = new Dictionary<Transform,bool>();
     private Vector3 rotation;
     public bool Rotate = true;
+
+    private bool resetRound = false;
+    private bool roundFinished = false;
 
 	public bool IsFull { get; private set; }
 
@@ -36,13 +39,13 @@ public class Blocks3D : MonoBehaviour
         
         if(resetRound)
         {
-            foreach (var block in blocks3D)
-            {
-                Block3D deActivatingBlock = (Block3D)block.Key.GetComponent<Block3D>();
-                deActivatingBlock.DoReset();
-                blocks3D[block.Key] = false;
-            }
-            priv.NextRound();
+            //foreach (var block in blocks3D)
+            //{
+            //    Block3D deActivatingBlock = (Block3D)block.Key.GetComponent<Block3D>();
+            //    deActivatingBlock.DoReset();
+            //    blocks3D[block.Key] = false;
+            //}
+            //resetRound = false;
         }
 
 	}
@@ -52,7 +55,7 @@ public class Blocks3D : MonoBehaviour
         yield return new WaitForSeconds(1.0f);
         while (true)
         {
-            if (Rotate)
+            if (doRotate)
                 transform.Rotate(rotation);
 
             yield return new WaitForEndOfFrame();
@@ -77,34 +80,25 @@ public class Blocks3D : MonoBehaviour
     public void ActivateBlockAt(Vector3 pos, GameColor _color)
     {
 		IsFull = true;
+        
         foreach (var block in blocks3D)
         {
-            foreach (var block in blocks3D)
+            if (blocks3D[block.Key] == false)
             {
                 blocks3D[block.Key] = true;
                 Block3D activatingBlock = (Block3D)block.Key.GetComponent<Block3D>();
-				activatingBlock.GetComponent<ColoredBlock>().SetColor(_color);
-                //Rotate = false;
+                activatingBlock.GetComponent<ColoredBlock>().SetColor(_color);
                 activatingBlock.DoActivation(pos);
-				IsFull = false;
+                IsFull = false;
                 break;
-            }
-
-            bool finished = true;
-            foreach (bool b in blocks3D.Values)
-            {
-                if (b == false)
-                    finished = false;
-            }
-
-            if (finished)
-            {
-                roundFinished = true;
-                StartCoroutine("EndRound");
-               
             }
         }
 
+        if (IsFull)
+        {
+            //roundFinished = true;
+            StartCoroutine("EndRound");
+        }
     }
 
     IEnumerator EndRound()

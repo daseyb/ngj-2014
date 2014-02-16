@@ -95,6 +95,15 @@ public class PrivacyScript : MonoBehaviour
 		scoreSystem.EndRound ();
 		team1MissedBlocks = 0;
 		team2MissedBlocks = 0;
+
+        foreach (GameObject go in GameObject.FindGameObjectsWithTag("Block"))
+        {
+            go.GetComponent<Block2D>().PushBack();
+        }
+
+        currentBlocksIndex++;
+        if (currentBlocksIndex >= blocks3D.Length)
+            --currentBlocksIndex;
 	}
 
     public void OnDrawGizmos()
@@ -115,11 +124,10 @@ public class PrivacyScript : MonoBehaviour
 			
 			if(TestHit(obj.transform.position - transform.position, obj.ObjectColor)) {
 	            other.tag = "Untagged";
-                if (!blocks3D[currentBlocksIndex].roundFinished)
-                    blocks3D[currentBlocksIndex].ActivateBlockAt(other.transform.position, obj.ObjectColor);
-				block2D.DestroyAndCreate();
+                blocks3D[currentBlocksIndex].ActivateBlockAt(other.transform.position, obj.ObjectColor);
+                block2D.StartDestroy();
 				scoreSystem.AddScore(obj.ObjectColor);
-				if(blocks3D.IsFull) {
+				if(blocks3D[currentBlocksIndex].IsFull) {
 					EndRound();
 				}
 
@@ -150,18 +158,5 @@ public class PrivacyScript : MonoBehaviour
 			}
 
         }
-    }
-
-    public void NextRound()
-    {
-        foreach (GameObject go in GameObject.FindGameObjectsWithTag("Block"))
-        {
-            go.GetComponent<Block2D>().PushBack();
-        }
-
-        currentBlocksIndex++;
-        if (currentBlocksIndex >= blocks3D.Length)
-            --currentBlocksIndex;
-        //blocks3D[currentBlocksIndex].GetComponent<Blocks3D>().StartNewRound(); 
     }
 }

@@ -41,7 +41,6 @@ public class Block3D : MonoBehaviour
 
     public void DoReset ()
     {
-
         StartCoroutine("ShrinkScale");
     }
     
@@ -56,26 +55,8 @@ public class Block3D : MonoBehaviour
         //}
 	}
 
-    /*IEnumerator RotateToStartRotation()
-    {
-        //Debug.Log("RotateToRotation Loop");
-
-        float t = 0;
-        while (t < 1)
-        {
-            yield return new WaitForEndOfFrame();
-            t += Time.deltaTime / moveDuration;
-
-            transform.rotation = Quaternion.Lerp(activationRotation, startRotation, rotationDuration);
-        }
-
-        transform.rotation = startRotation;
-    }*/
-
     IEnumerator MoveToStartPosition()
     {
-        //Debug.Log("MoveToPosition Loop");
-        
         float t = 0;
         while (t < 1)
         {
