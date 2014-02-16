@@ -11,7 +11,6 @@ public class Blocks3D : MonoBehaviour
     //private Dictionary<Transform, bool> blocks3D = new Dictionary<Transform,bool>();
     private List<Transform> blocks3D = new List<Transform>();
     private Vector3 rotation;
-    public bool Rotate = true;
 
     private bool resetRound = false;
     //private bool roundFinished = false;
