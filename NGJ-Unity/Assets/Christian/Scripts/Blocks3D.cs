@@ -82,7 +82,7 @@ public class Blocks3D : MonoBehaviour
     {
 		IsFull = true;
         
-        foreach (var block in blocks3D)
+        foreach (Transform block in blocks3D)
         {
             if (block.renderer.enabled == false)
             {
@@ -90,11 +90,13 @@ public class Blocks3D : MonoBehaviour
                 Block3D activatingBlock = (Block3D)block.GetComponent<Block3D>();
                 activatingBlock.GetComponent<ColoredBlock>().SetColor(_color);
                 activatingBlock.DoActivation(pos);
-                IsFull = false;
                 break;
             }
         }
 
+        foreach (Transform block in blocks3D)
+            if (!block.renderer.enabled) IsFull = false;
+        
         if (IsFull)
         {
             StartCoroutine("EndRound");
@@ -117,10 +119,21 @@ public class Blocks3D : MonoBehaviour
             float currentScale = Mathf.Lerp(initialScale, endScale, t);
             transform.localScale = new Vector3(currentScale, currentScale, currentScale);
         }
-        
-        yield return new WaitForSeconds(2.0f);
+        transform.localScale = new Vector3(endScale, endScale, endScale);
+
+        yield return new WaitForSeconds(1.0f);
         
         resetRound = true;
+        
+        t = 0;
+        while (t < 1)
+        {
+            yield return new WaitForEndOfFrame();
+            t += Time.deltaTime / duration;
+            float currentScale = Mathf.Lerp(endScale, initialScale, t);
+            transform.localScale = new Vector3(currentScale, currentScale, currentScale);
+        }
+        transform.localScale = new Vector3(initialScale, initialScale, initialScale);
     }
 
     //IEnumerator RemoveBlock(Transform block)
