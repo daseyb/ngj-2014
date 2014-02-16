@@ -10,9 +10,11 @@ public class Blocks3D : MonoBehaviour
 
     private Dictionary<Transform, bool> blocks3D = new Dictionary<Transform,bool>();
     private Vector3 rotation;
-    public bool roundFinished = false;
-    public bool resetRound = false;
-    void Start () 
+    public bool Rotate = true;
+
+	public bool IsFull { get; private set; }
+
+	void Start () 
     {
         rotation = new Vector3(Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f));
 
@@ -24,7 +26,7 @@ public class Blocks3D : MonoBehaviour
 
         StartCoroutine("RotationUpdate");
 	}
-	
+
 	public void Update () 
     {
         if(Random.Range(0.0f, 1.0f) > 0.99f)
@@ -74,18 +76,18 @@ public class Blocks3D : MonoBehaviour
 
     public void ActivateBlockAt(Vector3 pos, GameColor _color)
     {
-        if (!roundFinished)
+		IsFull = true;
+        foreach (var block in blocks3D)
         {
             foreach (var block in blocks3D)
             {
-                if (block.Value == false)
-                {
-                    blocks3D[block.Key] = true;
-                    Block3D activatingBlock = (Block3D)block.Key.GetComponent<Block3D>();
-                    activatingBlock.GetComponent<ColoredBlock>().SetColor(_color);
-                    activatingBlock.DoActivation(pos);
-                    break;
-                }
+                blocks3D[block.Key] = true;
+                Block3D activatingBlock = (Block3D)block.Key.GetComponent<Block3D>();
+				activatingBlock.GetComponent<ColoredBlock>().SetColor(_color);
+                //Rotate = false;
+                activatingBlock.DoActivation(pos);
+				IsFull = false;
+                break;
             }
 
             bool finished = true;
@@ -102,6 +104,7 @@ public class Blocks3D : MonoBehaviour
                
             }
         }
+
     }
 
     IEnumerator EndRound()

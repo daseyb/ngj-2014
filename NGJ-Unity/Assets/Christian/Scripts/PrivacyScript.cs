@@ -15,6 +15,7 @@ public enum GameColor
 public class PrivacyScript : MonoBehaviour
 {
     public Blocks3D[] blocks3D;
+	public ScoreSystem scoreSystem;
 
     public int currentBlocksIndex = 0;
 
@@ -23,13 +24,17 @@ public class PrivacyScript : MonoBehaviour
     public int circleVertexCount = 20;
     public float circleWidth = 0.05f;
 
+	public int MaxMissedBlocksAllowed = 30;
+
     public AnimationCurve ac;
 
 	public CirclePart[] CircleParts;
 
     private LineRenderer lineRenderer;
 
-
+	private int team1MissedBlocks = 0;
+	private int team2MissedBlocks = 0;
+    
     public void Start()
     {
         lineRenderer = gameObject.AddComponent<LineRenderer>();
@@ -80,6 +85,17 @@ public class PrivacyScript : MonoBehaviour
 		return hitParts.Count > 0;
 	}
 
+	public void Win(int _winningTeam) {
+		scoreSystem.OnWin ();
+		PersistentData.WinningTeam = _winningTeam;
+		Application.LoadLevel ("ScoreScreen");
+	}
+
+	public void EndRound() {
+		scoreSystem.EndRound ();
+		team1MissedBlocks = 0;
+		team2MissedBlocks = 0;
+	}
 
     public void OnDrawGizmos()
     {
@@ -95,15 +111,44 @@ public class PrivacyScript : MonoBehaviour
 
         if(other.tag.Equals("Block"))
         {
-			//if(TestHit(obj.transform.position - transform.position, obj.ObjectColor)) 
-            {
+			Block2D block2D = other.GetComponent<Block2D>();
+			
+			if(TestHit(obj.transform.position - transform.position, obj.ObjectColor)) {
 	            other.tag = "Untagged";
                 if (!blocks3D[currentBlocksIndex].roundFinished)
                     blocks3D[currentBlocksIndex].ActivateBlockAt(other.transform.position, obj.ObjectColor);
+				block2D.DestroyAndCreate();
+				scoreSystem.AddScore(obj.ObjectColor);
+				if(blocks3D.IsFull) {
+					EndRound();
+				}
+
+				//Regenerate health
+				if(ColoredObject.TEAM_1_COLORS.Contains(obj.ObjectColor)) {
+					team1MissedBlocks--;
+					if(team1MissedBlocks < 0)
+						team1MissedBlocks = 0;
+				} else {
+					team2MissedBlocks--;
+					if(team2MissedBlocks < 0)
+						team2MissedBlocks = 0;
+				}
+
+			} else {
+
+				//Deduct health
+				if(ColoredObject.TEAM_1_COLORS.Contains(obj.ObjectColor)) {
+					team1MissedBlocks++;
+					if(team1MissedBlocks == MaxMissedBlocksAllowed)
+						Win(2);
+				} else {
+					team2MissedBlocks++;
+					if(team2MissedBlocks == MaxMissedBlocksAllowed)
+						Win(1);
+				}
+				block2D.DestroyAndLoose();
 			}
 
-			Block2D block2D = other.GetComponent<Block2D>();
-			block2D.StartDestroy();
         }
     }
 
