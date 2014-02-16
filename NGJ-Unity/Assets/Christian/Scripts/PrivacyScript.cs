@@ -25,7 +25,7 @@ public class PrivacyScript : MonoBehaviour
     public int circleVertexCount = 20;
     public float circleWidth = 0.05f;
 
-	public int MaxMissedBlocksAllowed = 20;
+	public int MaxMissedBlocksAllowed = 4;
 
     public AnimationCurve ac;
 
@@ -66,6 +66,10 @@ public class PrivacyScript : MonoBehaviour
             lineRenderer.SetPosition(i, pos);
         }
     }
+
+	public int DangerLevel(int _teamIndex) {
+		return MaxMissedBlocksAllowed - (_teamIndex == 1 ? team1MissedBlocks : team2MissedBlocks);
+	}
 
 	public bool TestHit(Vector2 _dir, GameColor _testColor) {
 		float angle = Vector2.Angle(Vector2.right, _dir);
@@ -135,17 +139,18 @@ public class PrivacyScript : MonoBehaviour
 					EndRound();
 				}
 
-				//Regenerate health
-				if(ColoredObject.TEAM_1_COLORS.Contains(obj.ObjectColor)) {
-					team1MissedBlocks--;
-					if(team1MissedBlocks < 0)
-						team1MissedBlocks = 0;
-				} else {
-					team2MissedBlocks--;
-					if(team2MissedBlocks < 0)
-						team2MissedBlocks = 0;
+				if(Random.value < 0.5f) {
+					//Regenerate health
+					if(ColoredObject.TEAM_1_COLORS.Contains(obj.ObjectColor)) {
+						team1MissedBlocks--;
+						if(team1MissedBlocks < 0)
+							team1MissedBlocks = 0;
+					} else {
+						team2MissedBlocks--;
+						if(team2MissedBlocks < 0)
+							team2MissedBlocks = 0;
+					}
 				}
-
 			} else {
 
 				//Deduct health

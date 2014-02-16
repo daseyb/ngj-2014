@@ -11,6 +11,7 @@ public class Paddle : CirclePart {
 	public float MaxSpeed = 2.0f;
 	public bool MirrorSpeed = false;
 	public bool Centered = true;
+	public bool IsFlashing = false;
 
 	private LineRenderer lineRenderer;
 	private int vertexCount = 5;
@@ -27,6 +28,8 @@ public class Paddle : CirclePart {
 	void Start () {
 		PlayerColor = COLOR_MAP [ObjectColor];
 		lineRenderer = GetComponent<LineRenderer>();
+
+		StartCoroutine (Flashing ());
 	}
 
 	public static float WrapAngle(float _angle) {
@@ -34,6 +37,20 @@ public class Paddle : CirclePart {
 		if(_angle < 0)
 			_angle = Mathf.PI * 2 + _angle;
 		return _angle;
+	}
+
+	IEnumerator Flashing() {
+		while (true) {
+			if(IsFlashing) {
+				lineRenderer.enabled = false;
+				yield return new WaitForSeconds(0.1f);
+				lineRenderer.enabled = true;
+				yield return new WaitForSeconds(0.1f);
+			} else {
+				lineRenderer.enabled = true;
+				yield return null;
+			}
+		}
 	}
 
 	void UpdateLineRendering() {
@@ -59,6 +76,10 @@ public class Paddle : CirclePart {
 
 	// Update is called once per frame
 	void Update () {
+		if (Privacy) {
+			IsFlashing = Privacy.DangerLevel(PlayerIndex/2 + 1) < 4;
+		}
+
 		if(UIManager) {
 			float acc = UIManager.GetPaddleAcceleration (PlayerIndex);
 			if (Mathf.Sign (acc) != Mathf.Sign (speed))

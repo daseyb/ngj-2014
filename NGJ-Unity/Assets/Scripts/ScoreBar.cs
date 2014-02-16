@@ -20,8 +20,8 @@ public class ScoreBar : MonoBehaviour {
 		int thisTeamScore = PersistentData.GetTeamScore (TeamIndex);
 		int otherTeamScore = PersistentData.GetTeamScore (TeamIndex == 1 ? 2 : 1);
 		
-		int bottomScore = PersistentData.FinalScores[BottomBar.ObjectColor];
-		int topScore = PersistentData.FinalScores[TopBar.ObjectColor];
+		int bottomScore = PersistentData.GetScore(BottomBar.ObjectColor);
+		int topScore = PersistentData.GetScore(TopBar.ObjectColor);
 		
 		List<GameColor> teamColors = new List<GameColor>();
 		if(TeamIndex == 1)
@@ -32,7 +32,7 @@ public class ScoreBar : MonoBehaviour {
 		teamColors.Remove (BottomBar.ObjectColor);
 		teamColors.Remove (TopBar.ObjectColor);
 		
-		int middleScore = PersistentData.FinalScores [teamColors [0]];
+		int middleScore = PersistentData.GetScore(teamColors [0]);
 		
 		float bottomPercentage = (float)bottomScore / thisTeamScore;
 		float topPercentage = (float)topScore / thisTeamScore;

@@ -3,14 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class PersistentData : MonoBehaviour {
-	public static Dictionary<GameColor, int> FinalScores = new Dictionary<GameColor, int>() {
-		{GameColor.Blue, 	2},
-		{GameColor.Green, 	6},
-		{GameColor.Orange, 	3},
-		{GameColor.Red, 	5},
-		{GameColor.Teal, 	5},
-		{GameColor.Yellow, 	4},
-	};
+	public static Dictionary<GameColor, int> FinalScores;
 
 	public static int WinningTeam = 1;
 
@@ -23,10 +16,17 @@ public class PersistentData : MonoBehaviour {
 			teamColors.AddRange(ColoredObject.TEAM_2_COLORS);
 		
 		foreach (var col in teamColors)
-			totalTeamScore += PersistentData.FinalScores[col];
+			totalTeamScore += GetScore(col);
 
 		return totalTeamScore;
 	}
+
+	public static int GetScore(GameColor _color) {
+		if (!FinalScores.ContainsKey (_color))
+			return 0;
+		return FinalScores[_color];
+	}
+	
 	// Use this for initialization
 	void Start () {
 	
