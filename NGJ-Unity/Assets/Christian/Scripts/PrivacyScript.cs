@@ -16,6 +16,7 @@ public class PrivacyScript : MonoBehaviour
 {
     public Blocks3D[] blocks3D;
 	public ScoreSystem scoreSystem;
+    public ObjectSpawner objectSpawner;
 
     public int currentBlocksIndex = 0;
 
@@ -34,9 +35,12 @@ public class PrivacyScript : MonoBehaviour
 
 	private int team1MissedBlocks = 0;
 	private int team2MissedBlocks = 0;
-    
+
+    private int roundNumber;
+
     public void Start()
     {
+        roundNumber = 1;
         lineRenderer = gameObject.AddComponent<LineRenderer>();
         lineRenderer.material = new Material(Shader.Find("Diffuse"));
         lineRenderer.SetVertexCount(circleVertexCount + 1);
@@ -51,7 +55,6 @@ public class PrivacyScript : MonoBehaviour
 		
         for (var i = 0; i < circleVertexCount + 1; i++)
         {
-
             float angle = ((float)i / (float)circleVertexCount) * Mathf.PI * 2;
 
             float acV = ac.Evaluate(((float)i / (float)circleVertexCount));
@@ -62,8 +65,6 @@ public class PrivacyScript : MonoBehaviour
             Vector3 pos = new Vector3(x, y, 0);
             lineRenderer.SetPosition(i, pos);
         }
-
-
     }
 
 	public bool TestHit(Vector2 _dir, GameColor _testColor) {
@@ -100,6 +101,9 @@ public class PrivacyScript : MonoBehaviour
         {
             go.GetComponent<Block2D>().PushBack();
         }
+
+        objectSpawner.SpawnRythm = Mathf.Min(4, 4 - roundNumber);//6 - (roundNumber / 2));
+        roundNumber++;
 
         currentBlocksIndex++;
         if (currentBlocksIndex >= blocks3D.Length)
