@@ -54,6 +54,7 @@ public class Blocks3D : MonoBehaviour
 
     public void ActivateBlockAt(Vector3 pos, GameColor _color)
     {
+		IsFull = true;
         foreach (var block in blocks3D)
         {
             if (block.Value == false)
@@ -63,9 +64,10 @@ public class Blocks3D : MonoBehaviour
 				activatingBlock.GetComponent<ColoredBlock>().SetColor(_color);
                 //Rotate = false;
                 activatingBlock.DoActivation(pos);
+				IsFull = false;
                 break;
             }
         }
-		IsFull = true;
+
     }
 }

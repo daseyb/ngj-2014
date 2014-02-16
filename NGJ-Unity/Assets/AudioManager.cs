@@ -47,10 +47,10 @@ public class AudioManager : MonoBehaviour {
 	}
 
 	public void Play( GameColor _color, LoopType _type) {
-		Players [GameColor.Red] [_type].NextBeatVolume = 0;
-		Players [GameColor.Green] [_type].NextBeatVolume = 0;
-		Players [GameColor.Yellow] [_type].NextBeatVolume = 0;
-		Players [GameColor.Blue] [_type].NextBeatVolume = 0;
+		Players [GameColor.Red][_type].NextBeatVolume = 0;
+		Players [GameColor.Green][_type].NextBeatVolume = 0;
+		Players [GameColor.Yellow][_type].NextBeatVolume = 0;
+		Players [GameColor.Blue][_type].NextBeatVolume = 0;
 		
 		Players [_color] [_type].NextBeatVolume = 1;
 

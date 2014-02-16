@@ -18,9 +18,11 @@ public class SamplePlayer : MonoBehaviour {
 	[Range(0,1)]
 	public float Volume = 1;
 	public float Pitch = 1;
+
+	[HideInInspector]
 	public float NextBeatVolume = 1;
 	
-	//To sources, to switch in between as PlayScheduled stops playback.
+	//Two sources, to switch in between as PlayScheduled stops playback.
 	public AudioSource PrimarySource { get; private set; }
 	public AudioSource SecondarySource { get; private set; }
 

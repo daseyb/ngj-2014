@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class ScoreSystem : MonoBehaviour {
-
+	public int RoundWinBonus = 5;
 	public float TakeoverPercentage = 0.1f;
 
 	public Animation CircleAnimation;
@@ -13,13 +13,26 @@ public class ScoreSystem : MonoBehaviour {
 	public Dictionary<GameColor, int> Scores = new Dictionary<GameColor, int>();
 	public Dictionary<GameColor, int> RoundScores = new Dictionary<GameColor, int>();
 	
-
+	
 	class ScoreComparer : IComparer<KeyValuePair<GameColor, int>>
 	{
 		public int Compare (KeyValuePair<GameColor, int> x, KeyValuePair<GameColor, int> y)
 		{
 			return x.Value.CompareTo (y.Value);
 		}
+	}
+
+	public void OnWin() {
+		PersistentData.FinalScores = Scores;
+
+		List<KeyValuePair<GameColor, int>> scores = new List<KeyValuePair<GameColor, int>> ();
+		foreach(var score in Scores) {
+			scores.Add(score);
+		}
+		scores.Sort (new ScoreComparer ());
+		AudioManager.Play (scores [0].Key, LoopType.Bass);
+		AudioManager.Play (scores [0].Key, LoopType.Beat);
+		AudioManager.Play (scores [0].Key, LoopType.Lead);
 	}
 
 	public void EndRound() {
@@ -29,6 +42,7 @@ public class ScoreSystem : MonoBehaviour {
 		}
 		scores.Sort (new ScoreComparer ());
 
+		Scores [scores [0].Key] += RoundWinBonus;
 		RoundScores.Clear ();
 	}
 

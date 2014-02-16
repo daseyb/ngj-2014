@@ -22,7 +22,7 @@ public class PrivacyScript : MonoBehaviour
     public int circleVertexCount = 20;
     public float circleWidth = 0.05f;
 
-	public int MaxMissedBlocksAllowed = 20;
+	public int MaxMissedBlocksAllowed = 5;
 
     public AnimationCurve ac;
 
@@ -82,11 +82,13 @@ public class PrivacyScript : MonoBehaviour
 	}
 
 	public void Win(int _winningTeam) {
-
+		scoreSystem.OnWin ();
+		PersistentData.WinningTeam = _winningTeam;
+		Application.LoadLevel ("ScoreScreen");
 	}
 
 	public void EndRound() {
-
+		scoreSystem.EndRound ();
 	}
 
     public void OnDrawGizmos()
