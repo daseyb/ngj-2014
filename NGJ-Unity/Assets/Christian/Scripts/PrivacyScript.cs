@@ -102,7 +102,7 @@ public class PrivacyScript : MonoBehaviour
             go.GetComponent<Block2D>().PushBack();
         }
 
-        objectSpawner.SpawnRythm = Mathf.Min(4, 4 - roundNumber);//6 - (roundNumber / 2));
+        objectSpawner.SpawnRythm = Mathf.Max(1, Mathf.Min(4, 4 - roundNumber));
         roundNumber++;
 
         currentBlocksIndex++;
@@ -126,7 +126,7 @@ public class PrivacyScript : MonoBehaviour
         {
 			Block2D block2D = other.GetComponent<Block2D>();
 			
-			if(true || TestHit(obj.transform.position - transform.position, obj.ObjectColor)) {
+			if(TestHit(obj.transform.position - transform.position, obj.ObjectColor)) {
 	            other.tag = "Untagged";
                 blocks3D[currentBlocksIndex].ActivateBlockAt(other.transform.position, obj.ObjectColor);
                 block2D.StartDestroy();
