@@ -39,13 +39,13 @@ public class ScoreBar : MonoBehaviour {
 			maxHeight *= (float)thisTeamScore/otherTeamScore;
 		}
 
-		BottomBar.position = bottomPercentage * maxHeight / 2;
+		BottomBar.position = Direction * bottomPercentage * maxHeight / 2;
 		BottomBar.Size = bottomPercentage * maxHeight;
 
-		MiddleBar.position = BottomBar.position + middlePercentage * maxHeight / 2;
+		MiddleBar.position = Direction * (BottomBar.position + middlePercentage * maxHeight / 2);
 		MiddleBar.Size = middlePercentage * maxHeight;
 
-		TopBar.position = MiddleBar.position + topPercentage * maxHeight / 2;
+		TopBar.position = Direction * (MiddleBar.position + topPercentage * maxHeight / 2);
 		TopBar.Size = topPercentage * maxHeight;
 	}
 }
