@@ -10,7 +10,6 @@ public class Blocks3D : MonoBehaviour
 
     private Dictionary<Transform, bool> blocks3D = new Dictionary<Transform,bool>();
     private Vector3 rotation;
-    public bool Rotate = true;
 
 	public bool IsFull { get; private set; }
 

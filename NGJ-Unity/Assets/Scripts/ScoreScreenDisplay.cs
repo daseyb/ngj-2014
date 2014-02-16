@@ -1,14 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ScoreScreenDisplay : CirclePart {
-	public int PlayerIndex;
+	public int TeamIndex = 1;
 	public Color PlayerColor;
 	public PrivacyScript Privacy;
 	public float DistanceOffset = 0.1f;
 	public float WidthMultiplier = 1.2f;
-	public float MaxSpeed = 2.0f;
-	public bool MirrorSpeed = false;
 
 	private LineRenderer lineRenderer;
 	private int vertexCount = 5;
@@ -25,6 +24,22 @@ public class ScoreScreenDisplay : CirclePart {
 	void Start () {
 		PlayerColor = COLOR_MAP [ObjectColor];
 		lineRenderer = GetComponent<LineRenderer>();
+
+		int score = PersistentData.FinalScores [ObjectColor];
+		int totalTeamScore = 0;
+		List<GameColor> teamColors = new List<GameColor>();
+		if(TeamIndex == 1)
+			teamColors.AddRange(TEAM_1_COLORS);
+		else
+			teamColors.AddRange(TEAM_2_COLORS);
+
+		foreach (var col in teamColors) {
+			totalTeamScore += PersistentData.FinalScores[col];
+		}
+
+		float percent = (float)score / totalTeamScore;
+		int index = teamColors.IndexOf (ObjectColor);
+
 	}
 
 	public static float WrapAngle(float _angle) {
