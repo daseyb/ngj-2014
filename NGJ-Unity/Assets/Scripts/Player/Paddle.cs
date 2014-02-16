@@ -10,6 +10,7 @@ public class Paddle : CirclePart {
 	public float WidthMultiplier = 1.2f;
 	public float MaxSpeed = 2.0f;
 	public bool MirrorSpeed = false;
+	public bool Centered = true;
 
 	private LineRenderer lineRenderer;
 	private int vertexCount = 5;
@@ -44,7 +45,7 @@ public class Paddle : CirclePart {
 		
 		for (var i = 0; i < vertexCount + 1; i++)
 		{
-			float angle = ((float)i / (float)vertexCount) * Size - Size/2 + position;
+			float angle = ((float)i / (float)vertexCount) * Size - (Centered ? Size/2 : 0) + position;
 			angle = WrapAngle (angle);
 			
 			float radius = GetRadius(angle);

@@ -4,11 +4,11 @@ using System.Collections.Generic;
 
 public class PersistentData : MonoBehaviour {
 	public static Dictionary<GameColor, int> FinalScores = new Dictionary<GameColor, int>() {
-		{GameColor.Blue, 	10},
-		{GameColor.Green, 	12},
+		{GameColor.Blue, 	2},
+		{GameColor.Green, 	6},
 		{GameColor.Orange, 	3},
 		{GameColor.Red, 	5},
-		{GameColor.Teal, 	19},
+		{GameColor.Teal, 	5},
 		{GameColor.Yellow, 	4},
 	};
 
