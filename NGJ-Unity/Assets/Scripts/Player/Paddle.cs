@@ -58,19 +58,20 @@ public class Paddle : CirclePart {
 
 	// Update is called once per frame
 	void Update () {
-		
-		float acc = UIManager.GetPaddleAcceleration (PlayerIndex);
-		if (Mathf.Sign (acc) != Mathf.Sign (speed))
-			speed = 0;
+		if(UIManager) {
+			float acc = UIManager.GetPaddleAcceleration (PlayerIndex);
+			if (Mathf.Sign (acc) != Mathf.Sign (speed))
+				speed = 0;
 
-		speed = acc * MaxSpeed;
-		if(acc == 0)
-			speed = 0;
+			speed = acc * MaxSpeed;
+			if(acc == 0)
+				speed = 0;
 
-		speed = Mathf.Clamp (speed, -MaxSpeed, MaxSpeed);
-		
-		position += (MirrorSpeed ? -1 : 1) * speed * Time.deltaTime;
-		position = WrapAngle (position);
+			speed = Mathf.Clamp (speed, -MaxSpeed, MaxSpeed);
+			
+			position += (MirrorSpeed ? -1 : 1) * speed * Time.deltaTime;
+			position = WrapAngle (position);
+		}
 
 		UpdateLineRendering ();
 	}

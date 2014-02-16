@@ -2,9 +2,17 @@
 using System.Collections;
 
 public class MakePersistent : MonoBehaviour {
+	public bool DestroyThisOnDuplicate = true;
 	void Start () {
-		if(GameObject.Find(gameObject.name) != gameObject)
-			Destroy(gameObject);
+		GameObject otherObj = GameObject.Find (gameObject.name);
+		if(otherObj != gameObject)  {
+			if(DestroyThisOnDuplicate)
+				Destroy(gameObject);
+			else {
+				DontDestroyOnLoad (gameObject);
+				Destroy(otherObj);
+			}
+		}
 		else
 			DontDestroyOnLoad (gameObject);
 	}

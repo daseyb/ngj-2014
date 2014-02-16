@@ -22,7 +22,7 @@ public class PrivacyScript : MonoBehaviour
     public int circleVertexCount = 20;
     public float circleWidth = 0.05f;
 
-	public int MaxMissedBlocksAllowed = 5;
+	public int MaxMissedBlocksAllowed = 10;
 
     public AnimationCurve ac;
 
@@ -89,6 +89,8 @@ public class PrivacyScript : MonoBehaviour
 
 	public void EndRound() {
 		scoreSystem.EndRound ();
+		team1MissedBlocks = 0;
+		team2MissedBlocks = 0;
 	}
 
     public void OnDrawGizmos()
@@ -112,7 +114,21 @@ public class PrivacyScript : MonoBehaviour
 				if(blocks3D.IsFull) {
 					EndRound();
 				}
+
+				//Regenerate health
+				if(ColoredObject.TEAM_1_COLORS.Contains(obj.ObjectColor)) {
+					team1MissedBlocks--;
+					if(team1MissedBlocks < 0)
+						team1MissedBlocks = 0;
+				} else {
+					team2MissedBlocks--;
+					if(team2MissedBlocks < 0)
+						team2MissedBlocks = 0;
+				}
+
 			} else {
+
+				//Deduct health
 				if(ColoredObject.TEAM_1_COLORS.Contains(obj.ObjectColor)) {
 					team1MissedBlocks++;
 					if(team1MissedBlocks == MaxMissedBlocksAllowed)
