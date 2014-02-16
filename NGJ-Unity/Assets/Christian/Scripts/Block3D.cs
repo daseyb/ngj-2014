@@ -71,6 +71,8 @@ public class Block3D : MonoBehaviour
 
     IEnumerator GrowScale()
     {
+        transform.renderer.enabled = true;
+
         float t = 0;
         while (t < 1)
         {
@@ -98,5 +100,6 @@ public class Block3D : MonoBehaviour
             transform.localScale = new Vector3(currentScale, currentScale, currentScale);
         }
         transform.localScale = new Vector3(initialScale, initialScale, initialScale);
+        transform.renderer.enabled = false;
     }
 }

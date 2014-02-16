@@ -8,12 +8,13 @@ public class Blocks3D : MonoBehaviour
 
     public PrivacyScript priv;
 
-    private Dictionary<Transform, bool> blocks3D = new Dictionary<Transform,bool>();
+    //private Dictionary<Transform, bool> blocks3D = new Dictionary<Transform,bool>();
+    private List<Transform> blocks3D = new List<Transform>();
     private Vector3 rotation;
     public bool Rotate = true;
 
     private bool resetRound = false;
-    private bool roundFinished = false;
+    //private bool roundFinished = false;
 
 	public bool IsFull { get; private set; }
 
@@ -24,7 +25,9 @@ public class Blocks3D : MonoBehaviour
         // Keep trach of all the scoring blocks and if it is active
         for (int i = 0; i < transform.childCount; ++i)
         {
-            blocks3D.Add(transform.GetChild(i), false);
+            Transform child = transform.GetChild(i);
+            child.renderer.enabled = false;
+            blocks3D.Add(child);
         }
 
         StartCoroutine("RotationUpdate");
@@ -39,13 +42,12 @@ public class Blocks3D : MonoBehaviour
         
         if(resetRound)
         {
-            //foreach (var block in blocks3D)
-            //{
-            //    Block3D deActivatingBlock = (Block3D)block.Key.GetComponent<Block3D>();
-            //    deActivatingBlock.DoReset();
-            //    blocks3D[block.Key] = false;
-            //}
-            //resetRound = false;
+            foreach (var block in blocks3D)
+            {
+                Block3D deactivatingBlock = (Block3D)block.GetComponent<Block3D>();
+                deactivatingBlock.DoReset();
+            }
+            resetRound = false;
         }
 
 	}
@@ -83,10 +85,10 @@ public class Blocks3D : MonoBehaviour
         
         foreach (var block in blocks3D)
         {
-            if (blocks3D[block.Key] == false)
+            if (block.renderer.enabled == false)
             {
-                blocks3D[block.Key] = true;
-                Block3D activatingBlock = (Block3D)block.Key.GetComponent<Block3D>();
+                block.renderer.enabled = true;
+                Block3D activatingBlock = (Block3D)block.GetComponent<Block3D>();
                 activatingBlock.GetComponent<ColoredBlock>().SetColor(_color);
                 activatingBlock.DoActivation(pos);
                 IsFull = false;
@@ -96,7 +98,6 @@ public class Blocks3D : MonoBehaviour
 
         if (IsFull)
         {
-            //roundFinished = true;
             StartCoroutine("EndRound");
         }
     }
