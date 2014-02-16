@@ -11,6 +11,8 @@ public class ScoreSystem : MonoBehaviour {
 	public AudioManager AudioManager;
 
 	public Dictionary<GameColor, int> Scores = new Dictionary<GameColor, int>();
+	public Dictionary<GameColor, int> RoundScores = new Dictionary<GameColor, int>();
+	
 
 	class ScoreComparer : IComparer<KeyValuePair<GameColor, int>>
 	{
@@ -18,6 +20,16 @@ public class ScoreSystem : MonoBehaviour {
 		{
 			return x.Value.CompareTo (y.Value);
 		}
+	}
+
+	public void EndRound() {
+		List<KeyValuePair<GameColor, int>> scores = new List<KeyValuePair<GameColor, int>> ();
+		foreach(var score in RoundScores) {
+			scores.Add(score);
+		}
+		scores.Sort (new ScoreComparer ());
+
+		RoundScores.Clear ();
 	}
 
 	public void AddScore(GameColor _color) {
@@ -38,12 +50,16 @@ public class ScoreSystem : MonoBehaviour {
 			Scores[_color] = 0;
 		Scores [_color]++;
 
+		if(!RoundScores.ContainsKey(_color))
+			RoundScores[_color] = 0;
+		RoundScores [_color]++;
+
 		UpdateMusic ();
 	}
 
 	void UpdateMusic() {
 		List<KeyValuePair<GameColor, int>> scores = new List<KeyValuePair<GameColor, int>> ();
-		foreach(var score in Scores) {
+		foreach(var score in RoundScores) {
 			scores.Add(score);
 		}
 

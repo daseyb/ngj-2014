@@ -9,58 +9,51 @@ public enum LoopType {
 }
 
 public class AudioManager : MonoBehaviour {
-	public AudioClip[] RedLoops;
-	public AudioClip[] GreenLoops;
-	public AudioClip[] YellowLoops;
-	public AudioClip[] BlueLoops;
+	public SamplePlayer[] RedLoops;
+	public SamplePlayer[] GreenLoops;
+	public SamplePlayer[] YellowLoops;
+	public SamplePlayer[] BlueLoops;
 
-	public SamplePlayer LeadPlayer;
-	public SamplePlayer BassPlayer;
-	public SamplePlayer BeatPlayer;
-
-	public Dictionary<GameColor, Dictionary<LoopType, AudioClip>> AudioClips = new Dictionary<GameColor, Dictionary<LoopType, AudioClip>> ();
-	public Dictionary<LoopType, SamplePlayer> Players = new Dictionary<LoopType, SamplePlayer> ();
-
+	public Dictionary<GameColor, Dictionary<LoopType, SamplePlayer>> Players = new Dictionary<GameColor, Dictionary<LoopType, SamplePlayer>> ();
 	
 	void Start() {
-		AudioClips [GameColor.Red] = new Dictionary<LoopType, AudioClip> () 
+		Players [GameColor.Red] = new Dictionary<LoopType, SamplePlayer> () 
 		{
 			{ LoopType.Beat, RedLoops[0] },
 			{ LoopType.Bass, RedLoops[1] },
 			{ LoopType.Lead, RedLoops[2] }
 		};
 
-		AudioClips [GameColor.Green] = new Dictionary<LoopType, AudioClip> () 
+		Players [GameColor.Green] = new Dictionary<LoopType, SamplePlayer> () 
 		{
 			{ LoopType.Beat, GreenLoops[0] },
 			{ LoopType.Bass, GreenLoops[1] },
 			{ LoopType.Lead, GreenLoops[2] }
 		};
 
-		AudioClips [GameColor.Yellow] = new Dictionary<LoopType, AudioClip> () 
+		Players [GameColor.Yellow] = new Dictionary<LoopType, SamplePlayer> () 
 		{
 			{ LoopType.Beat, YellowLoops[0] },
 			{ LoopType.Bass, YellowLoops[1] },
 			{ LoopType.Lead, YellowLoops[2] }
 		};
 
-		AudioClips [GameColor.Blue] = new Dictionary<LoopType, AudioClip> () 
+		Players [GameColor.Blue] = new Dictionary<LoopType, SamplePlayer> () 
 		{
 			{ LoopType.Beat, BlueLoops[0] },
 			{ LoopType.Bass, BlueLoops[1] },
 			{ LoopType.Lead, BlueLoops[2] }
 		};
-
-		Players = new Dictionary<LoopType, SamplePlayer> () 
-		{
-			{ LoopType.Beat, BeatPlayer },
-			{ LoopType.Bass, BassPlayer },
-			{ LoopType.Lead, LeadPlayer }
-		};
 	}
 
 	public void Play( GameColor _color, LoopType _type) {
-		Players [_type].SampleClip = AudioClips [_color] [_type];
+		Players [GameColor.Red] [_type].NextBeatVolume = 0;
+		Players [GameColor.Green] [_type].NextBeatVolume = 0;
+		Players [GameColor.Yellow] [_type].NextBeatVolume = 0;
+		Players [GameColor.Blue] [_type].NextBeatVolume = 0;
+		
+		Players [_color] [_type].NextBeatVolume = 1;
+
 	}
 
 }

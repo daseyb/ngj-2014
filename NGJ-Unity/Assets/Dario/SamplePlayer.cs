@@ -18,6 +18,7 @@ public class SamplePlayer : MonoBehaviour {
 	[Range(0,1)]
 	public float Volume = 1;
 	public float Pitch = 1;
+	public float NextBeatVolume = 1;
 	
 	//To sources, to switch in between as PlayScheduled stops playback.
 	public AudioSource PrimarySource { get; private set; }
@@ -33,6 +34,7 @@ public class SamplePlayer : MonoBehaviour {
 
 		PrimarySource.clip = SampleClip;
 		SecondarySource.clip = SampleClip;
+		NextBeatVolume = Volume;
 	}
 
 	void OnEnable() {
@@ -45,14 +47,13 @@ public class SamplePlayer : MonoBehaviour {
 	}
 
 	void OnBeat(double _delay) {
-		AudioClip prevClip = PrimarySource.clip;
+		Volume = NextBeatVolume;
+		
 		PrimarySource.clip = SecondarySource.clip = SampleClip;
 		PrimarySource.volume = SecondarySource.volume = Volume;
 		PrimarySource.pitch = SecondarySource.pitch = Pitch;
 
 		currentBeat = (currentBeat + 1) % LoopLength;
-		if (prevClip == null && SampleClip != null)
-				currentBeat = 0;
 
 		if (currentBeat == 0) {
 			SecondarySource.PlayScheduled (_delay);
