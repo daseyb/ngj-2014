@@ -26,7 +26,7 @@ public class ScoreSystem : MonoBehaviour {
 		PersistentData.FinalScores = Scores;
 
 		List<KeyValuePair<GameColor, int>> scores = new List<KeyValuePair<GameColor, int>> ();
-		foreach(var score in Scores) {
+		foreach(var score in RoundScores) {
 			scores.Add(score);
 		}
 		scores.Sort (new ScoreComparer ());
@@ -48,6 +48,10 @@ public class ScoreSystem : MonoBehaviour {
 
 	public void AddScore(GameColor _color) {
 
+        if (!Scores.ContainsKey(_color))
+            Scores[_color] = 0;
+        Scores[_color]++;
+
 		if (_color == GameColor.Teal) {
 			AddScore(GameColor.Blue);
 			AddScore(GameColor.Green);
@@ -59,10 +63,6 @@ public class ScoreSystem : MonoBehaviour {
 		}
 
 		CircleAnimation.enabled = true;
-
-		if(!Scores.ContainsKey(_color))
-			Scores[_color] = 0;
-		Scores [_color]++;
 
 		if(!RoundScores.ContainsKey(_color))
 			RoundScores[_color] = 0;
